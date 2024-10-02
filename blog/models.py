@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 import datetime
+from taggit.managers import TaggableManager
 
 # class PublishedManager(models.Manager):
 #     def get_queryset(self):
@@ -34,7 +35,7 @@ class Post(models.Model):
     )
     body = models.TextField()
     publish = models.DateTimeField(default=datetime.datetime.now)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=datetime.datetime.now)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(
         max_length=2,
@@ -44,6 +45,7 @@ class Post(models.Model):
 
     objects = models.Manager()  # The default manager.
     published = PublishedManager()  # Our custom manager.
+    tags = TaggableManager()
 
     class Meta:
         ordering = ['-publish']
@@ -73,7 +75,7 @@ class Comment(models.Model):
     name = models.CharField(max_length=80)
     email = models.EmailField()
     body = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=datetime.datetime.now)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
 
